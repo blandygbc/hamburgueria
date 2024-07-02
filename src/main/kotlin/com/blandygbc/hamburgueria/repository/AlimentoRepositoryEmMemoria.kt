@@ -14,4 +14,16 @@ class AlimentoRepositoryEmMemoria: AlimentoRepository {
         alimentoList.add(alimento)
         return alimento
     }
+
+    override fun findAll(): List<Alimento> {
+        return alimentoList
+    }
+
+    override fun findById(alimentoId: Long): Alimento {
+        return alimentoList.first { it.id == alimentoId }
+    }
+
+    override fun findByNome(pesquisa: String): Alimento {
+        return alimentoList.first { it.nome == pesquisa }
+    }
 }

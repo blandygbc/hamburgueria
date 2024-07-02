@@ -12,4 +12,15 @@ class AlimentoService(
     fun salvar(alimentoRequest: AlimentoRequest): Alimento {
         return alimentoRepository.save(alimentoRequest.paraDominio())
     }
+    fun buscarTodos(): List<Alimento> {
+        return alimentoRepository.findAll()
+    }
+
+    fun buscarAlimento(pesquisa: String): Alimento {
+        val id = pesquisa.toLongOrNull()
+        if (id == null){
+            return alimentoRepository.findByNome(pesquisa)
+        }
+        return alimentoRepository.findById(id)
+    }
 }
