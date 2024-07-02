@@ -2,18 +2,18 @@ package com.blandygbc.hamburgueria.domain.alimento
 
 import java.math.BigDecimal
 
-class AlimentoRequest(
+class AlimentoNew(
     val nome: String,
     val descricao: String,
     val preco: BigDecimal,
     val categoria: String
 ) {
-    fun paraDominio(): Alimento{
+    fun paraDominio(): Alimento {
         return Alimento(
             id = null,
             nome = this.nome,
             descricao = this.descricao,
-            preco =  this.preco,
+            preco = this.preco,
             categoria = this.categoria
         )
     }
