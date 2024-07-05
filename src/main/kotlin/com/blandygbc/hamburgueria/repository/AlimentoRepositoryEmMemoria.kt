@@ -2,6 +2,7 @@ package com.blandygbc.hamburgueria.repository
 
 import com.blandygbc.hamburgueria.domain.alimento.Alimento
 import com.blandygbc.hamburgueria.domain.alimento.AlimentoUpdate
+import com.blandygbc.hamburgueria.exception.ElementoNaoEncontradoException
 import org.springframework.stereotype.Component
 import java.math.BigDecimal
 
@@ -54,11 +55,19 @@ class AlimentoRepositoryEmMemoria : AlimentoRepository {
     }
 
     override fun findByNome(pesquisa: String): Alimento {
-        return alimentoList.first { it.nome == pesquisa }
+        try {
+            return alimentoList.first { it.nome == pesquisa }
+        } catch (e: NoSuchElementException) {
+            throw ElementoNaoEncontradoException("Não foi possível encontrar por nome: $pesquisa")
+        }
     }
 
     override fun delete(id: Long) {
-        alimentoList.removeIf { it.id == id }
+        try {
+            alimentoList.removeIf { it.id == id }
+        } catch (e: Exception) {
+            throw ElementoNaoEncontradoException("Não foi possível encontrar pelo id: $id")
+        }
     }
 
     override fun update(
