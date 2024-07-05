@@ -1,15 +1,15 @@
 package com.blandygbc.hamburgueria.service
 
 import com.blandygbc.hamburgueria.domain.alimento.Alimento
-import com.blandygbc.hamburgueria.domain.alimento.AlimentoNew
+import com.blandygbc.hamburgueria.domain.alimento.AlimentoNovo
 import com.blandygbc.hamburgueria.domain.alimento.AlimentoUpdate
 import com.blandygbc.hamburgueria.repository.AlimentoRepository
 import org.springframework.stereotype.Service
 
 @Service
 class AlimentoService(private val alimentoRepository: AlimentoRepository) {
-    fun salvar(alimentoNew: AlimentoNew): Alimento {
-        return alimentoRepository.save(alimentoNew.paraDominio())
+    fun salvar(alimentoNovo: AlimentoNovo): Alimento {
+        return alimentoRepository.save(alimentoNovo.paraDominio())
     }
 
     fun buscarTodos(): List<Alimento> {
@@ -18,9 +18,7 @@ class AlimentoService(private val alimentoRepository: AlimentoRepository) {
 
     fun buscarAlimento(pesquisa: String): Alimento {
         val id = pesquisa.toLongOrNull()
-        if (id == null) {
-            return alimentoRepository.findByNome(pesquisa)
-        }
+            ?: return alimentoRepository.findByNome(pesquisa)
         return alimentoRepository.findById(id)
     }
 

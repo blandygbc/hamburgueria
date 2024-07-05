@@ -51,7 +51,11 @@ class AlimentoRepositoryEmMemoria : AlimentoRepository {
     }
 
     override fun findById(alimentoId: Long): Alimento {
-        return alimentoList.first { it.id == alimentoId }
+        try {
+            return alimentoList.first { it.id == alimentoId }
+        } catch (e: NoSuchElementException) {
+            throw ElementoNaoEncontradoException("Não foi possível encontrar por id: $alimentoId")
+        }
     }
 
     override fun findByNome(pesquisa: String): Alimento {

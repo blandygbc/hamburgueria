@@ -3,6 +3,8 @@ package com.blandygbc.hamburgueria.exception
 import org.springframework.http.HttpStatus
 import org.springframework.http.HttpStatusCode
 import org.springframework.http.ResponseEntity
+import org.springframework.validation.FieldError
+import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.client.HttpServerErrorException.InternalServerError
@@ -42,6 +44,21 @@ class GlobalExceptionController {
         )
     }
 
+    @ExceptionHandler
+    fun handleMethodArgumentNotValidException(ex: MethodArgumentNotValidException): ResponseEntity<List<ValidationErrorFields>> {
+        return ResponseEntity
+            .badRequest()
+            .body(
+                extrairErrosDeValidacao(ex)
+            )
+    }
+
+    private fun extrairErrosDeValidacao(ex: MethodArgumentNotValidException): List<ValidationErrorFields> {
+        return ex.bindingResult.allErrors.map {
+            ValidationErrorFields(it as FieldError)
+        }
+    }
+
     private fun getResponseEntity(
         statusCode: HttpStatusCode,
         message: String,
@@ -52,6 +69,13 @@ class GlobalExceptionController {
                 message,
             ),
             statusCode,
+        )
+    }
+
+    class ValidationErrorFields(val field: String, val message: String) {
+        constructor(error: FieldError) : this(
+            field = error.field,
+            message = error.defaultMessage ?: "Campo com informação inválida"
         )
     }
 }

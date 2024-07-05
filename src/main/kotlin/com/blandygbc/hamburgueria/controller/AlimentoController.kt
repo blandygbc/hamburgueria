@@ -1,9 +1,10 @@
 package com.blandygbc.hamburgueria.controller
 
 import com.blandygbc.hamburgueria.domain.alimento.Alimento
-import com.blandygbc.hamburgueria.domain.alimento.AlimentoNew
+import com.blandygbc.hamburgueria.domain.alimento.AlimentoNovo
 import com.blandygbc.hamburgueria.domain.alimento.AlimentoUpdate
 import com.blandygbc.hamburgueria.service.AlimentoService
+import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -20,8 +21,8 @@ import org.springframework.web.bind.annotation.RestController
 class AlimentoController(private val alimentoService: AlimentoService) {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    fun salvar(@RequestBody alimentoNew: AlimentoNew): Alimento {
-        return alimentoService.salvar(alimentoNew)
+    fun salvar(@RequestBody @Valid alimentoNovo: AlimentoNovo): Alimento {
+        return alimentoService.salvar(alimentoNovo)
     }
 
     @GetMapping
