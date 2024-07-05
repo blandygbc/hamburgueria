@@ -26,6 +26,9 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     implementation("org.springframework.boot:spring-boot-starter-validation:3.1.0")
+    implementation("com.h2database:h2:2.2.224")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+
 }
 
 kotlin {

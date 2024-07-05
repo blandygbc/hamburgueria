@@ -40,10 +40,17 @@ class AlimentoRepositoryEmMemoria : AlimentoRepository {
     }
 
     override fun save(alimento: Alimento): Alimento {
-        indice += 1
-        alimento.id = indice
-        alimentoList.add(alimento)
-        return alimento
+
+        val alimentoSalvo = alimento.copy(
+            id = ++indice,
+            nome = alimento.nome,
+            descricao = alimento.descricao,
+            preco = alimento.preco,
+            categoria = alimento.categoria
+        )
+
+        alimentoList.add(alimentoSalvo)
+        return alimentoSalvo
     }
 
     override fun findAll(): List<Alimento> {
