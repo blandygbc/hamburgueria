@@ -15,4 +15,13 @@ data class Alimento(
     val descricao: String,
     val preco: BigDecimal,
     val categoria: String
-)
+) {
+    fun update(alimUpdate: AlimentoUpdate): Alimento {
+        return this.copy(
+            nome = alimUpdate.nome ?: this.nome,
+            descricao = alimUpdate.descricao ?: this.descricao,
+            preco = alimUpdate.preco ?: this.preco,
+            categoria = alimUpdate.categoria ?: this.categoria
+        )
+    }
+}

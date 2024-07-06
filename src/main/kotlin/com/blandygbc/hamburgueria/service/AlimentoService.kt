@@ -3,6 +3,7 @@ package com.blandygbc.hamburgueria.service
 import com.blandygbc.hamburgueria.domain.alimento.Alimento
 import com.blandygbc.hamburgueria.domain.alimento.AlimentoNovo
 import com.blandygbc.hamburgueria.domain.alimento.AlimentoUpdate
+import com.blandygbc.hamburgueria.exception.ElementoNaoEncontradoException
 import com.blandygbc.hamburgueria.repository.AlimentoRepository
 import org.springframework.stereotype.Service
 
@@ -18,15 +19,28 @@ class AlimentoService(private val alimentoRepository: AlimentoRepository) {
 
     fun buscarAlimento(pesquisa: String): Alimento {
         val id = pesquisa.toLongOrNull()
-            ?: return alimentoRepository.findByNome(pesquisa)
-        return alimentoRepository.findById(id)
+            ?: return alimentoRepository
+                .findByNome(pesquisa)
+                .orElseThrow {
+                    ElementoNaoEncontradoException("Alimento não encontrado")
+                }
+
+        return alimentoRepository
+            .findById(id)
+            .orElseThrow {
+                ElementoNaoEncontradoException("Alimento não encontrado")
+            }
     }
 
     fun removerAlimento(id: Long) {
-        alimentoRepository.delete(id)
+        alimentoRepository.deleteById(id)
     }
 
     fun atualizarAlimento(idAlimento: Long, alimentoReq: AlimentoUpdate): Alimento? {
-        return alimentoRepository.update(idAlimento, alimentoReq)
+        val alimento = alimentoRepository
+            .findById(idAlimento)
+            .orElseThrow { ElementoNaoEncontradoException("Alimento não encontrado") }
+
+        return alimentoRepository.save(alimento.update(alimentoReq))
     }
 }
