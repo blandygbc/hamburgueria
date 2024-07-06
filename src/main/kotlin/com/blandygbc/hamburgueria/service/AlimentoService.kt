@@ -12,14 +12,10 @@ import org.springframework.transaction.annotation.Transactional
 class AlimentoService(private val alimentoRepository: AlimentoRepository) {
 
     @Transactional
-    fun salvar(alimentoNovo: AlimentoNovo): Alimento {
-        return alimentoRepository.save(alimentoNovo.paraDominio())
-    }
+    fun salvar(alimentoNovo: AlimentoNovo): Alimento = alimentoRepository.save(alimentoNovo.paraDominio())
 
     @Transactional(readOnly = true)
-    fun buscarTodos(): List<Alimento> {
-        return alimentoRepository.findAll()
-    }
+    fun buscarTodos(): List<Alimento> = alimentoRepository.findAll()
 
     @Transactional(readOnly = true)
     fun buscarAlimento(pesquisa: String): Alimento {
@@ -38,9 +34,7 @@ class AlimentoService(private val alimentoRepository: AlimentoRepository) {
     }
 
     @Transactional
-    fun removerAlimento(id: Long) {
-        alimentoRepository.deleteById(id)
-    }
+    fun removerAlimento(id: Long) = alimentoRepository.deleteById(id)
 
     @Transactional
     fun atualizarAlimento(idAlimento: Long, alimentoReq: AlimentoUpdate): Alimento? {
